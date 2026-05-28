@@ -224,7 +224,6 @@ AI assistance was used to help plan the implementation, generate boilerplate doc
 
 ## Known Gaps
 
-- No deployment URL is included yet.
 - No end-to-end browser tests are included.
 - Feed validation and HTML sanitization are not implemented.
 - Accessibility has not had a full audit beyond using semantic headings on the detail page.
@@ -234,9 +233,8 @@ AI assistance was used to help plan the implementation, generate boilerplate doc
 
 1. Add an external feed adapter and schema validation.
 2. Sanitize feed provided HTML before rendering descriptions.
-3. Add Playwright tests for index filtering, detail navigation, 404 behavior, and Apply tracking.
-4. Deploy to Vercel and set `NEXT_PUBLIC_SITE_URL`.
-5. Clean up unused generated UI components.
+3. Add tests for index filtering, detail navigation, 404 behavior, and Apply tracking.
+4. Clean up unused generated UI components.
 
 ## Production Readiness
 
