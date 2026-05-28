@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { ApplyButton } from '@/components/apply-button';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getJobBySlug, getJobs } from '@/lib/jobs/repository';
+import { formatDate, formatSalary } from '@/lib/utils';
 
 type JobPageProps = {
   params: Promise<{
@@ -48,42 +50,69 @@ export default async function JobPage({ params }: JobPageProps) {
         </CardHeader>
 
         <CardContent className="space-y-4">
-          <p className="text-muted-foreground">Placeholder job detail page for {job.location}.</p>
-
-          <dl className="grid gap-3 text-sm sm:grid-cols-2">
+          <dl className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">
+            <div>
+              <dt className="text-muted-foreground">Location</dt>
+              <dd className="font-medium">{job.location}</dd>
+            </div>
+            <div>
+              <dt className="text-muted-foreground">Employment type</dt>
+              <dd className="font-medium">{job.type}</dd>
+            </div>
+            <div>
+              <dt className="text-muted-foreground">Department</dt>
+              <dd className="font-medium">{job.department}</dd>
+            </div>
             <div>
               <dt className="text-muted-foreground">Reference</dt>
               <dd className="font-medium">{job.id}</dd>
             </div>
             <div>
               <dt className="text-muted-foreground">Posted date</dt>
-              <dd className="font-medium">{job.postedDate}</dd>
+              <dd className="font-medium">{formatDate(job.postedDate)}</dd>
             </div>
             <div>
               <dt className="text-muted-foreground">Closing date</dt>
-              <dd className="font-medium">{job.closingDate ?? 'Open until filled'}</dd>
+              <dd className="font-medium">
+                {job.closingDate ? formatDate(job.closingDate) : 'Open until filled'}
+              </dd>
             </div>
             <div>
               <dt className="text-muted-foreground">Salary</dt>
               <dd className="font-medium">
-                {job.salary.currency} {job.salary.min.toLocaleString()} -{' '}
-                {job.salary.max.toLocaleString()}
+                {formatSalary(job.salary.min, job.salary.max, job.salary.currency)}
               </dd>
             </div>
           </dl>
 
-          <div
-            className="text-muted-foreground [&_p]:leading-7"
-            dangerouslySetInnerHTML={{ __html: job.description }}
-          />
+          <section className="space-y-3 border-t pt-4">
+            <h2 className="text-xl font-semibold">About the role</h2>
+            <div
+              className="text-muted-foreground [&_p]:leading-7"
+              dangerouslySetInnerHTML={{ __html: job.description }}
+            />
+          </section>
+
+          <section className="space-y-3 border-t pt-4">
+            <h2 className="text-xl font-semibold">Requirements</h2>
+            <ul className="list-disc space-y-2 pl-5 text-muted-foreground">
+              {job.requirements.map((requirement) => (
+                <li key={requirement}>{requirement}</li>
+              ))}
+            </ul>
+          </section>
 
           <div className="border-t pt-4">
-            <Button
-              type="button"
-              size="lg"
-            >
-              Apply now
-            </Button>
+            <ApplyButton
+              job={{
+                id: job.id,
+                title: job.title,
+                slug: job.slug,
+                department: job.department,
+                location: job.location,
+                type: job.type
+              }}
+            />
           </div>
         </CardContent>
       </Card>

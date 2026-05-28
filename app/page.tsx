@@ -1,10 +1,37 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { getJobs } from '@/lib/jobs/repository';
 import { formatDate, formatSalary } from '@/lib/utils';
+
+interface HomePageProps {
+  searchParams: Promise<{
+    department?: string;
+    type?: string;
+  }>;
+}
+
+export async function generateMetadata({ searchParams }: HomePageProps): Promise<Metadata> {
+  await searchParams;
+  return {
+    title: 'Medical careers | Job listings',
+    description:
+      'Browse current clinical job listings across New Zealand, including location, department, employment type, and role details.',
+    openGraph: {
+      title: 'Medical careers | Job listings',
+      description:
+        'Browse current clinical job listings across New Zealand, including location, department, employment type, and role details.',
+      type: 'website',
+      url: '/'
+    },
+    alternates: {
+      canonical: '/'
+    }
+  };
+}
 
 export default async function Home() {
   const jobs = await getJobs();
