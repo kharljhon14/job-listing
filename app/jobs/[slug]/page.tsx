@@ -1,8 +1,7 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-
 import { ApplyButton } from '@/components/apply-button';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getJobBySlug, getJobs } from '@/lib/jobs/repository';
@@ -13,6 +12,36 @@ type JobPageProps = {
     slug: string;
   }>;
 };
+
+export async function generateMetadata({ params }: JobPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const job = await getJobBySlug(slug);
+
+  if (!job) {
+    return {
+      title: 'Job not found',
+      description: 'The requested job listing could not be found.',
+      robots: { index: false, follow: false }
+    };
+  }
+
+  const title = `${job.title} | Medical Jobs NZ`;
+  const description = `${job.title} role in ${job.department}, based in ${job.location}. View employment type, salary range, requirements, and application details.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      url: `/jobs/${job.slug}`
+    },
+    alternates: {
+      canonical: `/jobs/${job.slug}`
+    }
+  };
+}
 
 export async function generateStaticParams() {
   const jobs = await getJobs();
@@ -42,10 +71,6 @@ export default async function JobPage({ params }: JobPageProps) {
 
       <Card>
         <CardHeader>
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary">{job.department}</Badge>
-            <Badge variant="outline">{job.type}</Badge>
-          </div>
           <CardTitle className="text-3xl">{job.title}</CardTitle>
         </CardHeader>
 
