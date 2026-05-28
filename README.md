@@ -32,6 +32,12 @@ Open:
 http://localhost:3000
 ```
 
+## Live Site
+
+```text
+https://job-listing-rho-five.vercel.app/
+```
+
 ## Scripts
 
 ```bash
@@ -48,7 +54,7 @@ pnpm start     # run the production build locally
 Set this in production so canonical URLs, Open Graph URLs, JSON-LD organization URLs, and sitemap URLs use the deployed origin:
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://your-domain.com
+NEXT_PUBLIC_SITE_URL=https://job-listing-rho-five.vercel.app
 ```
 
 If unset, the app defaults to:
