@@ -5,6 +5,7 @@ import { ApplyButton } from '@/components/apply-button';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getJobBySlug, getJobs } from '@/lib/jobs/repository';
+import { buildJobPostingJsonLd } from '@/lib/jobs/structured-data';
 import { formatDate, formatSalary } from '@/lib/utils';
 
 type JobPageProps = {
@@ -59,8 +60,15 @@ export default async function JobPage({ params }: JobPageProps) {
     notFound();
   }
 
+  const jsonLd = buildJobPostingJsonLd(job);
+
   return (
     <main className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-6 py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <Button
         asChild
         variant="ghost"
