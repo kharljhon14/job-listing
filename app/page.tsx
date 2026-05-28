@@ -35,7 +35,7 @@ export default async function Home() {
               </div>
               <CardTitle className="text-xl">
                 <Link
-                  href="/"
+                  href={`/jobs/${job.slug}`}
                   className="hover:underline"
                 >
                   {job.title}
@@ -72,7 +72,7 @@ export default async function Home() {
               </dl>
 
               <Button asChild>
-                <Link href="/">View role</Link>
+                <Link href={`/jobs/${job.slug}`}>View role</Link>
               </Button>
             </CardContent>
           </Card>
