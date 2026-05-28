@@ -79,7 +79,9 @@ export default async function JobPage({ params }: JobPageProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-3xl">{job.title}</CardTitle>
+          <CardTitle>
+            <h1 className="text-3xl">{job.title}</h1>
+          </CardTitle>
         </CardHeader>
 
         <CardContent className="space-y-4">
